@@ -762,6 +762,623 @@ async function loadWeather(){
   }
 }
 loadWeather();
+</script> 
+  <!--
+  ================================================================
+  TRADUCTION COMPLÈTE FR/EN/DE/NL/ES/IT/PL — Le Vieux Gréement / Guestify
+  ================================================================
+  À coller dans index.html, juste AVANT </body> (après le <script>
+  existant avec toggle() et loadWeather()).
+
+  Traduit TOUT le contenu (navigation, sections, FAQ, cartes,
+  carte du restaurant complète) en anglais, allemand, néerlandais,
+  espagnol, italien ou polonais selon la langue du téléphone. Les
+  noms propres, lieux, villes et plages restent inchangés.
+
+  Ce script ne modifie AUCUNE balise HTML existante : il cible les
+  éléments par leur ordre d'apparition dans chaque section. Si tu
+  ajoutes/retires un plat ou une FAQ plus tard, dis-le-moi et je
+  réajuste les index.
+  ================================================================
+-->
+<script>
+(function(){
+
+  var rawLang = (navigator.language || navigator.userLanguage || 'fr').toLowerCase();
+  var lang = 'fr';
+  if (rawLang.indexOf('en') === 0) lang = 'en';
+  else if (rawLang.indexOf('de') === 0) lang = 'de';
+  else if (rawLang.indexOf('nl') === 0) lang = 'nl';
+  else if (rawLang.indexOf('es') === 0) lang = 'es';
+  else if (rawLang.indexOf('it') === 0) lang = 'it';
+  else if (rawLang.indexOf('pl') === 0) lang = 'pl';
+  if (lang === 'fr') return;
+
+  var NBSP = '\u00A0';
+
+  function setText(el, txt){ if (el) el.textContent = txt; }
+  function setHTML(el, html){ if (el) el.innerHTML = html; }
+  function apply(list, arr){
+    list.forEach(function(el, i){ if (arr[i] !== undefined) setText(el, arr[i]); });
+  }
+  function applyHTML(list, arr){
+    list.forEach(function(el, i){ if (arr[i] !== undefined) setHTML(el, arr[i]); });
+  }
+
+  // ================= HERO / MÉTÉO / NAV =================
+  setHTML(document.querySelector('.hero-badge'), {
+    en: '✦'+NBSP+'Stay Guide'+NBSP+'✦',
+    de: '✦'+NBSP+'Aufenthaltsführer'+NBSP+'✦',
+    nl: '✦'+NBSP+'Verblijfsgids'+NBSP+'✦',
+    es: '✦'+NBSP+'Guía de estancia'+NBSP+'✦',
+    it: '✦'+NBSP+'Guida al soggiorno'+NBSP+'✦',
+    pl: '✦'+NBSP+'Przewodnik pobytu'+NBSP+'✦'
+  }[lang]);
+
+  setText(document.querySelector('.meteo-label-top'), {
+    en: 'Weather right now', de: 'Wetter jetzt', nl: 'Weer nu',
+    es: 'Meteo en directo', it: 'Meteo in diretta', pl: 'Pogoda teraz'
+  }[lang]);
+
+  apply(document.querySelectorAll('.qn-label'), {
+    en: ['Hotel & Resto','Bikes','Beaches','Eat','Activities','Tides','Practical','Leaving'],
+    de: ['Hotel & Resto','Fahrräder','Strände','Essen','Aktivitäten','Gezeiten','Praktisch','Abreise'],
+    nl: ['Hotel & Resto','Fietsen','Stranden','Eten','Activiteiten','Getijden','Praktisch','Vertrek'],
+    es: ['Hotel y Resto','Bicis','Playas','Comer','Actividades','Mareas','Práctico','Salida'],
+    it: ['Hotel e Resto','Bici','Spiagge','Mangiare','Attività','Maree','Pratico','Partenza'],
+    pl: ['Hotel i Resto','Rowery','Plaże','Jedzenie','Atrakcje','Pływy','Praktyczne','Wyjazd']
+  }[lang]);
+
+  apply(document.querySelectorAll('.section-title'), {
+    en: ["The hotel & our restaurant","Bikes & getting around","The beaches","Where to eat","Things to do on the island","Tides & upcoming weather","Practical info","Heading back"],
+    de: ["Das Hotel & unser Restaurant","Fahrräder & Fortbewegung","Die Strände","Wo man isst","Zu tun auf der Insel","Gezeiten & Wetter","Praktische Infos","Die Abreise"],
+    nl: ["Het hotel & ons restaurant","Fietsen & verplaatsing","De stranden","Waar te eten","Te doen op het eiland","Getijden & weer","Praktische info","Vertrek"],
+    es: ["El hotel y nuestro restaurante","Bicicletas y desplazamientos","Las playas","Dónde comer","Qué hacer en la isla","Mareas y previsión","Información práctica","La vuelta"],
+    it: ["L'hotel e il nostro ristorante","Bici e spostamenti","Le spiagge","Dove mangiare","Cosa fare sull'isola","Maree e meteo","Info pratiche","Il rientro"],
+    pl: ["Hotel i nasza restauracja","Rowery i przemieszczanie się","Plaże","Gdzie zjeść","Co robić na wyspie","Pływy i pogoda","Informacje praktyczne","Powrót"]
+  }[lang]);
+
+  apply(document.querySelectorAll('.section-sub'), {
+    en: ["Hours, WiFi, current menu","Partners, routes, taxi","Anneries, Peu Ragot","The hotel's selection","Must-sees & beautiful spots","Full forecast for today","Shops, health, banks","Avoiding traffic, check-out"],
+    de: ["Öffnungszeiten, WiFi, aktuelle Karte","Partner, Strecken, Taxi","Anneries, Peu Ragot","Die Auswahl des Hotels","Highlights & schöne Orte","Vollständige Vorhersage für heute","Geschäfte, Gesundheit, Banken","Stau vermeiden, Check-out"],
+    nl: ["Openingstijden, WiFi, huidig menu","Partners, routes, taxi","Anneries, Peu Ragot","De selectie van het hotel","Bezienswaardigheden & mooie plekken","Volledige voorspelling voor vandaag","Winkels, gezondheid, banken","Files vermijden, check-out"],
+    es: ["Horarios, WiFi, carta actual","Socios, rutas, taxi","Anneries, Peu Ragot","La selección del hotel","Imprescindibles y rincones bonitos","Previsión completa de hoy","Tiendas, salud, bancos","Evitar atascos, check-out"],
+    it: ["Orari, WiFi, menu del momento","Partner, percorsi, taxi","Anneries, Peu Ragot","La selezione dell'hotel","Da non perdere e luoghi belli","Previsioni complete di oggi","Negozi, salute, banche","Evitare il traffico, check-out"],
+    pl: ["Godziny, WiFi, aktualne menu","Partnerzy, trasy, taxi","Anneries, Peu Ragot","Wybór hotelu","Warte zobaczenia miejsca","Pełna prognoza na dziś","Sklepy, zdrowie, banki","Unikanie korków, check-out"]
+  }[lang]);
+
+  // ================= SECTION HÔTEL =================
+  setText(document.querySelector('.wifi-label'), {
+    en:'Free WiFi', de:'Kostenloses WiFi', nl:'Gratis WiFi', es:'WiFi gratis', it:'WiFi gratuito', pl:'Bezpłatne WiFi'
+  }[lang]);
+  setText(document.querySelector('.wifi-note'), {
+    en:'Direct connection — no password', de:'Direkte Verbindung — kein Passwort', nl:'Directe verbinding — geen wachtwoord',
+    es:'Conexión directa — sin contraseña', it:'Connessione diretta — nessuna password', pl:'Połączenie bezpośrednie — bez hasła'
+  }[lang]);
+
+  var hotelFaq = document.querySelectorAll('#hotel .faq-item');
+  applyHTML(Array.prototype.map.call(hotelFaq, function(el){ return el.querySelector('.faq-q'); }), {
+    en: ['Check-in &amp; Check-out','Reception hours','Breakfast','Restaurant hours','Pets','Parking'],
+    de: ['Check-in &amp; Check-out','Rezeptionszeiten','Frühstück','Öffnungszeiten Restaurant','Haustiere','Parken'],
+    nl: ['Check-in & check-out','Openingstijden receptie','Ontbijt','Openingstijden restaurant','Huisdieren','Parkeren'],
+    es: ['Entrada y salida','Horario de recepción','Desayuno','Horario del restaurante','Mascotas','Aparcamiento'],
+    it: ['Check-in e Check-out','Orari reception','Colazione','Orari ristorante','Animali','Parcheggio'],
+    pl: ['Zameldowanie i wymeldowanie','Godziny recepcji','Śniadanie','Godziny restauracji','Zwierzęta','Parking']
+  }[lang]);
+  applyHTML(Array.prototype.map.call(hotelFaq, function(el){ return el.querySelector('.faq-a'); }), {
+    en: [
+      'Arrival from <strong>3:00 PM</strong> · Departure before <strong>11:00 AM</strong><br>Luggage storage available at reception during opening hours.',
+      'Open every day from <strong>7:30 AM to 9:00 PM</strong>.<br>Outside these hours, reception is closed.',
+      'Served every morning from <strong>7:00 AM to 10:00 AM</strong>.',
+      'Open for lunch — closing at <strong>9:00 PM</strong><br>Open every day.',
+      'Welcome · <strong>€15 / night</strong> supplement<br>Please let reception know on arrival.',
+      '<strong>Paid + charging points:</strong> Parking des Lilas — 300m<br><strong>Free:</strong> Rue des Clousies &nbsp;·&nbsp; Avenue du Moulin des Sables'
+    ],
+    de: [
+      'Anreise ab <strong>15:00 Uhr</strong> · Abreise vor <strong>11:00 Uhr</strong><br>Gepäckaufbewahrung an der Rezeption während der Öffnungszeiten möglich.',
+      'Täglich geöffnet von <strong>7:30 bis 21:00 Uhr</strong>.<br>Außerhalb dieser Zeiten ist die Rezeption geschlossen.',
+      'Serviert jeden Morgen von <strong>7:00 bis 10:00 Uhr</strong>.',
+      'Geöffnet zum Mittagessen — Schließung um <strong>21:00 Uhr</strong><br>Täglich geöffnet.',
+      'Willkommen · Zuschlag <strong>15€ / Nacht</strong><br>Bitte bei Ankunft an der Rezeption melden.',
+      '<strong>Kostenpflichtig + Ladestationen:</strong> Parking des Lilas — 300m<br><strong>Kostenlos:</strong> Rue des Clousies &nbsp;·&nbsp; Avenue du Moulin des Sables'
+    ],
+    nl: [
+      'Aankomst vanaf <strong>15u00</strong> · Vertrek vóór <strong>11u00</strong><br>Bagage-opslag mogelijk bij de receptie tijdens openingstijden.',
+      'Elke dag open van <strong>7u30 tot 21u00</strong>.<br>Buiten deze uren is de receptie gesloten.',
+      'Geserveerd elke ochtend van <strong>7u00 tot 10u00</strong>.',
+      'Open voor de lunch — sluit om <strong>21u00</strong><br>Elke dag open.',
+      'Welkom · toeslag van <strong>€15 / nacht</strong><br>Graag melden bij aankomst aan de receptie.',
+      '<strong>Betaald + oplaadpunten:</strong> Parking des Lilas — 300m<br><strong>Gratis:</strong> Rue des Clousies &nbsp;·&nbsp; Avenue du Moulin des Sables'
+    ],
+    es: [
+      'Llegada a partir de las <strong>15:00</strong> · Salida antes de las <strong>11:00</strong><br>Depósito de equipaje posible en recepción durante el horario de apertura.',
+      'Abierta todos los días de <strong>7:30 a 21:00</strong>.<br>Fuera de este horario, la recepción está cerrada.',
+      'Servido cada mañana de <strong>7:00 a 10:00</strong>.',
+      'Abierto para almorzar — cierra a las <strong>21:00</strong><br>Abierto todos los días.',
+      'Bienvenidas · suplemento de <strong>15€ / noche</strong><br>Por favor avisad en recepción a la llegada.',
+      '<strong>De pago + puntos de recarga:</strong> Parking des Lilas — 300m<br><strong>Gratuito:</strong> Rue des Clousies &nbsp;·&nbsp; Avenue du Moulin des Sables'
+    ],
+    it: [
+      'Arrivo dalle <strong>15:00</strong> · Partenza entro le <strong>11:00</strong><br>Deposito bagagli disponibile in reception durante gli orari di apertura.',
+      'Aperta tutti i giorni dalle <strong>7:30 alle 21:00</strong>.<br>Fuori da questi orari, la reception è chiusa.',
+      'Servita ogni mattina dalle <strong>7:00 alle 10:00</strong>.',
+      'Aperto per pranzo — chiusura alle <strong>21:00</strong><br>Aperto tutti i giorni.',
+      'Benvenuti · supplemento di <strong>15€ / notte</strong><br>Si prega di avvisare la reception all\'arrivo.',
+      '<strong>A pagamento + punti di ricarica:</strong> Parking des Lilas — 300m<br><strong>Gratuito:</strong> Rue des Clousies &nbsp;·&nbsp; Avenue du Moulin des Sables'
+    ],
+    pl: [
+      'Przyjazd od <strong>15:00</strong> · Wyjazd przed <strong>11:00</strong><br>Przechowanie bagażu możliwe w recepcji w godzinach otwarcia.',
+      'Otwarta codziennie od <strong>7:30 do 21:00</strong>.<br>Poza tymi godzinami recepcja jest zamknięta.',
+      'Podawane każdego ranka od <strong>7:00 do 10:00</strong>.',
+      'Otwarta na lunch — zamknięcie o <strong>21:00</strong><br>Otwarta codziennie.',
+      'Zwierzęta mile widziane · dopłata <strong>15€ / noc</strong><br>Prosimy zgłosić w recepcji przy przyjeździe.',
+      '<strong>Płatny + punkty ładowania:</strong> Parking des Lilas — 300m<br><strong>Bezpłatny:</strong> Rue des Clousies &nbsp;·&nbsp; Avenue du Moulin des Sables'
+    ]
+  }[lang]);
+
+  // ---- Carte du restaurant ----
+  apply(document.querySelectorAll('#hotel .menu-section-title'), {
+    en: ["Oysters — Éric Neveu, La Flotte","€15 suggestions","Our €10 selections","Our €5 selections","Desserts"],
+    de: ["Austern — Éric Neveu, La Flotte","Vorschläge zu 15€","Unsere Auswahl zu 10€","Unsere Auswahl zu 5€","Desserts"],
+    nl: ["Oesters — Éric Neveu, La Flotte","Suggesties voor €15","Onze keuzes voor €10","Onze keuzes voor €5","Desserts"],
+    es: ["Ostras — Éric Neveu, La Flotte","Sugerencias a 15€","Nuestra selección a 10€","Nuestra selección a 5€","Postres"],
+    it: ["Ostriche — Éric Neveu, La Flotte","Suggerimenti a 15€","Le nostre selezioni a 10€","Le nostre selezioni a 5€","Dessert"],
+    pl: ["Ostrygi — Éric Neveu, La Flotte","Propozycje za 15€","Nasz wybór za 10€","Nasz wybór za 5€","Desery"]
+  }[lang]);
+
+  var rows = document.querySelectorAll('#hotel .menu-row');
+  var menuNames = {
+    en: ['6 pieces','9 pieces','12 pieces',
+      'Beef Gravlax','Salmon Tartare','Burrata & roasted Apricots',
+      'Pink shrimps (8)','Razor clams (10)','Trio of fish rillettes','Olive duo','Duck terrine with Pineau des Charentes','Pork tenderloin, dried (75g)','Warm Comté (120g)','Tomato Focaccia','Focaccia flammekueche',
+      'Fuet (160g)','Baby potatoes with garlic butter','Baby spinach & sun-dried tomatoes','Homemade hummus',
+      'Salted caramel custard Fleur de Sel','Chocolate & salted caramel custard Fleur de Sel','Strawberries & Chantilly cream','Ice Cream Pot (Ernest)'],
+    de: ['6 Stück','9 Stück','12 Stück',
+      'Rind-Gravlax','Lachstatar','Burrata & geröstete Aprikosen',
+      'Rosa Garnelen (8)','Scheidenmuscheln (10)','Fisch-Rillettes-Trio','Oliven-Duo','Entenpastete mit Pineau des Charentes','Getrocknetes Schweinefilet (75g)','Warmer Comté (120g)','Tomaten-Focaccia','Focaccia Flammekueche',
+      'Fuet (160g)','Baby-Kartoffeln mit Knoblauchbutter','Babyspinat & getrocknete Tomaten','Hausgemachter Hummus',
+      'Karamell-Creme Fleur de Sel','Schokoladen-Karamell-Creme Fleur de Sel','Erdbeeren mit Chantilly','Eisbecher (Ernest)'],
+    nl: ['6 stuks','9 stuks','12 stuks',
+      'Runder-gravlax','Zalmtartaar','Burrata & geroosterde abrikozen',
+      'Roze garnalen (8)','Scheermessen (10)','Trio van visrillettes','Olijvenduo','Eendenpastei met Pineau des Charentes','Gedroogde varkenshaas (75g)','Warme Comté (120g)','Tomatenfocaccia','Focaccia flammekueche',
+      'Fuet (160g)','Krieltjes met knoflookboter','Babyspinazie & zongedroogde tomaten','Zelfgemaakte hummus',
+      'Karamelcrème Fleur de Sel','Chocolade-karamelcrème Fleur de Sel','Aardbeien met slagroom','IJspot (Ernest)'],
+    es: ['6 piezas','9 piezas','12 piezas',
+      'Gravlax de ternera','Tartar de salmón','Burrata y albaricoques asados',
+      'Gambas rosadas (8)','Navajas (10)','Trío de patés de pescado','Dúo de aceitunas','Terrina de pato con Pineau des Charentes','Solomillo de cerdo curado (75g)','Comté caliente (120g)','Focaccia de tomate','Focaccia flammekueche',
+      'Fuet (160g)','Patatas baby con mantequilla de ajo','Espinacas baby y tomates secos','Hummus casero',
+      'Crema de caramelo con Fleur de Sel','Crema de chocolate y caramelo Fleur de Sel','Fresas con nata','Copa de helado (Ernest)'],
+    it: ['6 pezzi','9 pezzi','12 pezzi',
+      'Gravlax di manzo','Tartare di salmone','Burrata e albicocche arrostite',
+      'Gamberi rosa (8)','Cannolicchi (10)','Trio di rillettes di pesce','Duo di olive','Terrina d\'anatra al Pineau des Charentes','Filetto di maiale essiccato (75g)','Comté caldo (120g)','Focaccia al pomodoro','Focaccia flammekueche',
+      'Fuet (160g)','Patatine novelle al burro d\'aglio','Spinacino e pomodori secchi','Hummus fatto in casa',
+      'Crema al caramello Fleur de Sel','Crema al cioccolato e caramello Fleur de Sel','Fragole con panna','Coppa di gelato (Ernest)'],
+    pl: ['6 sztuk','9 sztuk','12 sztuk',
+      'Gravlax wołowy','Tatar z łososia','Burrata z pieczonymi morelami',
+      'Krewetki różowe (8)','Małże brzytwy (10)','Trio rillettes rybnych','Duet oliwek','Terrina z kaczki z Pineau des Charentes','Suszona polędwiczka wieprzowa (75g)','Ciepły ser Comté (120g)','Focaccia pomidorowa','Focaccia flammekueche',
+      'Fuet (160g)','Młode ziemniaki z masłem czosnkowym','Młody szpinak z suszonymi pomidorami','Hummus domowy',
+      'Krem karmelowy Fleur de Sel','Krem czekoladowo-karmelowy Fleur de Sel','Truskawki z bitą śmietaną','Puchar lodowy (Ernest)']
+  }[lang];
+  var menuDescs = {
+    en: [null,null,null, null,null,null,
+      'Mayonnaise','with parsley and garlic','sardine, tuna, crab meat','Black olive tapenade & pickled Green olives','Pickles','mustard & pickles','Honey & walnuts','Spinach · Basil · Marinated peppers','Sour cream · Bacon bits · Onions',
+      'Spanish saucisson',null,null,null,
+      null,null,null,'Artisan ice cream maker from La Rochelle · Caribbean chocolate · Vanilla · Strawberry · Salted caramel'],
+    de: [null,null,null, null,null,null,
+      'Mayonnaise','mit Petersilie und Knoblauch','Sardine, Thunfisch, Krabbenfleisch','Schwarze Olivenpaste & eingelegte grüne Oliven','Cornichons','Senf & Cornichons','Honig & Walnüsse','Spinat · Basilikum · Marinierte Paprika','Crème fraîche · Speckwürfel · Zwiebeln',
+      'Spanische Wurst',null,null,null,
+      null,null,null,'Kunsteisdiele aus La Rochelle · Karibische Schokolade · Vanille · Erdbeere · Salzkaramell'],
+    nl: [null,null,null, null,null,null,
+      'Mayonaise','met peterselie en knoflook','sardine, tonijn, krabvlees','Tapenade van zwarte olijven & gemarineerde groene olijven','Augurken','mosterd & augurken','Honing & walnoten','Spinazie · Basilicum · Gemarineerde paprika','Zure room · Spekjes · Uien',
+      'Spaanse worst',null,null,null,
+      null,null,null,'Ambachtelijke ijsmaker uit La Rochelle · Caraïbische chocolade · Vanille · Aardbei · Zeezoutkaramel'],
+    es: [null,null,null, null,null,null,
+      'Mayonesa','con perejil y ajo','sardina, atún, carne de cangrejo','Tapenade de aceituna negra y aceitunas verdes encurtidas','Pepinillos','mostaza y pepinillos','Miel y nueces','Espinacas · Albahaca · Pimientos marinados','Nata agria · Trocitos de bacon · Cebolla',
+      'Embutido español',null,null,null,
+      null,null,null,'Heladería artesanal de La Rochelle · Chocolate caribeño · Vainilla · Fresa · Caramelo salado'],
+    it: [null,null,null, null,null,null,
+      'Maionese','con prezzemolo e aglio','sardina, tonno, polpa di granchio','Tapenade di olive nere e olive verdi marinate','Cetriolini','senape e cetriolini','Miele e noci','Spinaci · Basilico · Peperoni marinati','Panna acida · Pancetta a dadini · Cipolle',
+      'Salame spagnolo',null,null,null,
+      null,null,null,'Gelateria artigianale di La Rochelle · Cioccolato caraibico · Vaniglia · Fragola · Caramello salato'],
+    pl: [null,null,null, null,null,null,
+      'Majonez','z pietruszką i czosnkiem','sardynka, tuńczyk, mięso z kraba','Tapenada z czarnych oliwek i marynowane zielone oliwki','Korniszony','musztarda i korniszony','Miód i orzechy włoskie','Szpinak · Bazylia · Marynowana papryka','Śmietana · Kawałki boczku · Cebula',
+      'Kiełbasa hiszpańska',null,null,null,
+      null,null,null,'Rzemieślnicza lodziarnia z La Rochelle · Czekolada karaibska · Wanilia · Truskawka · Słony karmel']
+  }[lang];
+  rows.forEach(function(el, i){
+    var nameEl = el.querySelector('.menu-name');
+    var descEl = el.querySelector('.menu-desc');
+    if (nameEl && menuNames[i]) nameEl.textContent = menuNames[i];
+    if (descEl && menuDescs[i]) descEl.textContent = menuDescs[i];
+  });
+
+  var breadNote = document.querySelector('#hotel div[style*="font-style:italic"]');
+  setText(breadNote, {
+    en:'Extra bread basket: €1', de:'Extra Brotkorb: 1€', nl:'Extra broodmand: €1',
+    es:'Cesta de pan extra: 1€', it:'Cestino di pane extra: 1€', pl:'Dodatkowy koszyk pieczywa: 1€'
+  }[lang]);
+
+  // ================= VÉLOS =================
+  var veloCards = document.querySelectorAll('#velos .card');
+  applyHTML(Array.prototype.map.call(veloCards, function(el){ return el.querySelector('.card-tag'); }), {
+    en: ['Partner · Client discount','Partner · Client discount'],
+    de: ['Partner · Kundenrabatt','Partner · Kundenrabatt'],
+    nl: ['Partner · Klantenkorting','Partner · Klantenkorting'],
+    es: ['Socio · Descuento clientes','Socio · Descuento clientes'],
+    it: ['Partner · Sconto clienti','Partner · Sconto clienti'],
+    pl: ['Partner · Rabat dla gości','Partner · Rabat dla gości']
+  }[lang]);
+  applyHTML(Array.prototype.map.call(veloCards, function(el){ return el.querySelector('.card-detail'); }), {
+    en: [
+      "1 rue Aristide Briand · Open 7 days a week<br>Classic, electric, tandem and kids' bikes. Helmet & lock included.",
+      "2 avenue d'Antioche · Open 7 days a week<br>High-end bikes Made in France. Free helmets & locks. Home delivery. Assistance 7 days a week."
+    ],
+    de: [
+      "1 rue Aristide Briand · Täglich geöffnet<br>Klassische Räder, E-Bikes, Tandems, Kinderräder. Helm & Schloss inklusive.",
+      "2 avenue d'Antioche · Täglich geöffnet<br>Hochwertige Räder, Made in France. Helme & Schlösser kostenlos. Lieferung nach Hause. 7 Tage die Woche Support."
+    ],
+    nl: [
+      "1 rue Aristide Briand · Elke dag open<br>Klassieke, elektrische fietsen, tandems, kinderfietsen. Helm & slot inbegrepen.",
+      "2 avenue d'Antioche · Elke dag open<br>Hoogwaardige fietsen, Made in France. Gratis helm & slot. Levering aan huis. 7 dagen per week bijstand."
+    ],
+    es: [
+      "1 rue Aristide Briand · Abierto los 7 días<br>Bicicletas clásicas, eléctricas, tándems, infantiles. Casco y candado incluidos.",
+      "2 avenue d'Antioche · Abierto los 7 días<br>Bicicletas de alta gama Made in France. Cascos y candados gratuitos. Entrega a domicilio. Asistencia los 7 días."
+    ],
+    it: [
+      "1 rue Aristide Briand · Aperto 7 giorni su 7<br>Bici classiche, elettriche, tandem, per bambini. Casco e lucchetto inclusi.",
+      "2 avenue d'Antioche · Aperto 7 giorni su 7<br>Bici di alta gamma Made in France. Caschi e lucchetti gratuiti. Consegna a domicilio. Assistenza 7 giorni su 7."
+    ],
+    pl: [
+      "1 rue Aristide Briand · Otwarte 7 dni w tygodniu<br>Rowery klasyczne, elektryczne, tandemy, dziecięce. Kask i zapięcie w cenie.",
+      "2 avenue d'Antioche · Otwarte 7 dni w tygodniu<br>Rowery wysokiej klasy Made in France. Kaski i zapięcia gratis. Dostawa do domu. Pomoc 7 dni w tygodniu."
+    ]
+  }[lang]);
+  var veloFaq = document.querySelectorAll('#velos .faq-item');
+  applyHTML(Array.prototype.map.call(veloFaq, function(el){ return el.querySelector('.faq-q'); }), {
+    en: ['Distances from the hotel','Taxi'], de: ['Entfernungen ab dem Hotel','Taxi'], nl: ['Afstanden vanaf het hotel','Taxi'],
+    es: ['Distancias desde el hotel','Taxi'], it: ['Distanze dall\'hotel','Taxi'],
+    pl: ['Odległości od hotelu','Taxi']
+  }[lang]);
+  applyHTML(Array.prototype.map.call(veloFaq, function(el){ return el.querySelector('.faq-a'); }), {
+    en: [
+      '<strong>Port de Saint-Martin-de-Ré</strong> — 7 km · about 30 min<br><strong>Port de La Flotte</strong> — 11.5 km · about 48 min<br><strong>Phare des Baleines</strong> — 16 km · about 1h10<br><strong>Banc du Bûcheron</strong> (Les Portes-en-Ré) — 18 km · about 1h20<br><br><em style="font-size:12px">110 km of marked cycle paths on the island — it\'s all flat.</em>',
+      'Anthony Taxi — available 7 days a week'
+    ],
+    de: [
+      '<strong>Port de Saint-Martin-de-Ré</strong> — 7 km · ca. 30 Min.<br><strong>Port de La Flotte</strong> — 11,5 km · ca. 48 Min.<br><strong>Phare des Baleines</strong> — 16 km · ca. 1 Std. 10<br><strong>Banc du Bûcheron</strong> (Les Portes-en-Ré) — 18 km · ca. 1 Std. 20<br><br><em style="font-size:12px">110 km markierte Radwege auf der Insel — alles flach.</em>',
+      'Anthony Taxi — täglich verfügbar'
+    ],
+    nl: [
+      '<strong>Port de Saint-Martin-de-Ré</strong> — 7 km · ca. 30 min<br><strong>Port de La Flotte</strong> — 11,5 km · ca. 48 min<br><strong>Phare des Baleines</strong> — 16 km · ca. 1u10<br><strong>Banc du Bûcheron</strong> (Les Portes-en-Ré) — 18 km · ca. 1u20<br><br><em style="font-size:12px">110 km bewegwijzerde fietspaden op het eiland — alles is vlak.</em>',
+      'Anthony Taxi — elke dag beschikbaar'
+    ],
+    es: [
+      '<strong>Port de Saint-Martin-de-Ré</strong> — 7 km · unos 30 min<br><strong>Port de La Flotte</strong> — 11,5 km · unos 48 min<br><strong>Phare des Baleines</strong> — 16 km · aprox. 1h10<br><strong>Banc du Bûcheron</strong> (Les Portes-en-Ré) — 18 km · aprox. 1h20<br><br><em style="font-size:12px">110 km de carriles bici señalizados en la isla — todo llano.</em>',
+      'Anthony Taxi — disponible los 7 días'
+    ],
+    it: [
+      '<strong>Port de Saint-Martin-de-Ré</strong> — 7 km · circa 30 min<br><strong>Port de La Flotte</strong> — 11,5 km · circa 48 min<br><strong>Phare des Baleines</strong> — 16 km · circa 1h10<br><strong>Banc du Bûcheron</strong> (Les Portes-en-Ré) — 18 km · circa 1h20<br><br><em style="font-size:12px">110 km di piste ciclabili segnalate sull\'isola — tutto pianeggiante.</em>',
+      'Anthony Taxi — disponibile 7 giorni su 7'
+    ],
+    pl: [
+      '<strong>Port de Saint-Martin-de-Ré</strong> — 7 km · ok. 30 min<br><strong>Port de La Flotte</strong> — 11,5 km · ok. 48 min<br><strong>Phare des Baleines</strong> — 16 km · ok. 1h10<br><strong>Banc du Bûcheron</strong> (Les Portes-en-Ré) — 18 km · ok. 1h20<br><br><em style="font-size:12px">110 km oznakowanych ścieżek rowerowych na wyspie — teren całkowicie płaski.</em>',
+      'Anthony Taxi — dostępne 7 dni w tygodniu'
+    ]
+  }[lang]);
+
+  // ================= PLAGES =================
+  var plageCards = document.querySelectorAll('#plages .card');
+  applyHTML(Array.prototype.map.call(plageCards, function(el){ return el.querySelector('.card-tag'); }), {
+    en: ['10 min walk','5 min by bike'], de: ['10 Min. zu Fuß','5 Min. mit dem Rad'], nl: ['10 min lopen','5 min fietsen'],
+    es: ['10 min a pie','5 min en bici'], it: ['10 min a piedi','5 min in bici'],
+    pl: ['10 min pieszo','5 min rowerem']
+  }[lang]);
+  applyHTML(Array.prototype.map.call(plageCards, function(el){ return el.querySelector('.card-detail'); }), {
+    en: [
+      'The closest beach to the hotel. Fine sand, calm waters, ideal for family swimming.',
+      'Beautiful fine-sand beach lined with pines, a peaceful family atmosphere. Ideal for swimming.'
+    ],
+    de: [
+      'Der nächstgelegene Strand zum Hotel. Feiner Sand, ruhiges Wasser, ideal zum Baden mit der Familie.',
+      'Schöner Sandstrand, gesäumt von Pinien, ruhige, familiäre Atmosphäre. Ideal zum Baden.'
+    ],
+    nl: [
+      'Het dichtstbijzijnde strand bij het hotel. Fijn zand, rustig water, ideaal om als gezin te zwemmen.',
+      'Mooi fijn zandstrand omzoomd door dennen, rustige gezinssfeer. Ideaal om te zwemmen.'
+    ],
+    es: [
+      'La playa más cercana al hotel. Arena fina, aguas tranquilas, ideal para el baño en familia.',
+      'Bonita playa de arena fina bordeada de pinos, ambiente familiar y tranquilo. Ideal para bañarse.'
+    ],
+    it: [
+      'La spiaggia più vicina all\'hotel. Sabbia fine, acque calme, ideale per il bagno in famiglia.',
+      'Bella spiaggia di sabbia fine bordata di pini, atmosfera familiare e tranquilla. Ideale per fare il bagno.'
+    ],
+    pl: [
+      'Najbliższa plaża od hotelu. Drobny piasek, spokojna woda, idealna do kąpieli rodzinnej.',
+      'Piękna plaża z drobnym piaskiem otoczona sosnami, spokojna, rodzinna atmosfera. Idealna do pływania.'
+    ]
+  }[lang]);
+  var plageFaqQ = document.querySelector('#plages .faq-q');
+  var plageFaqA = document.querySelector('#plages .faq-a');
+  setText(plageFaqQ, { en:'Swimming tip', de:'Bade-Tipp', nl:'Zwemtip', es:'Consejo de baño', it:'Consiglio per il bagno', pl:'Wskazówka do kąpieli' }[lang]);
+  setText(plageFaqA, {
+    en:'Best swimming 2h before and after high tide. Check the tides in the dedicated section.',
+    de:'Optimales Baden 2 Std. vor und nach der Flut. Gezeiten im entsprechenden Bereich prüfen.',
+    nl:'Optimaal zwemmen 2u vóór en na hoogtij. Bekijk de getijden in de daarvoor bestemde sectie.',
+    es:'El mejor momento para bañarse es 2h antes y después de la pleamar. Consulta las mareas en la sección dedicada.',
+    it:'Momento ideale per il bagno: 2h prima e dopo l\'alta marea. Consulta le maree nella sezione dedicata.',
+    pl:'Najlepszy czas na kąpiel to 2h przed i po przypływie. Sprawdź pływy w dedykowanej sekcji.'
+  }[lang]);
+
+  // ================= MANGER =================
+  var mangerCards = document.querySelectorAll('#manger .card');
+  applyHTML(Array.prototype.map.call(mangerCards, function(el){ return el.querySelector('.card-tag'); }), {
+    en: ['Fine dining','Seafood cuisine','Our favourite'],
+    de: ['Gehobene Küche','Meeresküche','Unser Favorit'],
+    nl: ['Fijne keuken','Zeevruchtenkeuken','Onze favoriet'],
+    es: ['Alta cocina','Cocina marinera','Nuestro favorito'],
+    it: ['Cucina gourmet','Cucina di mare','Il nostro preferito'],
+    pl: ['Kuchnia wykwintna','Kuchnia z owocami morza','Nasz ulubiony']
+  }[lang]);
+  applyHTML(Array.prototype.map.call(mangerCards, function(el){ return el.querySelector('.card-detail'); }), {
+    en: [
+      "16 rue de l'Olivette · La Couarde-sur-Mer<br>Seasonal cooking on a Japanese barbecue, chalkboard menu. Intimate atmosphere.<br><strong>Closed Tue & Wed.</strong>",
+      "2 bis avenue de Nouralène · La Couarde-sur-Mer<br>Seaside bistro, shaded terrace, cod fritters. Gault & Millau.<br><strong>Wed – Sun.</strong> Booking recommended.",
+      "13 quai Georges Clémenceau · Saint-Martin-de-Ré<br>On the harbour, produce-driven cooking following the tides. Former Michelin Bib Gourmand.<br><strong>Tue – Sun · 12–2:30pm & 7:30–9:30pm.</strong>"
+    ],
+    de: [
+      "16 rue de l'Olivette · La Couarde-sur-Mer<br>Saisonale Küche vom japanischen Grill, Tageskarte. Intime Atmosphäre.<br><strong>Di & Mi geschlossen.</strong>",
+      "2 bis avenue de Nouralène · La Couarde-sur-Mer<br>Bistro am Meer, schattige Terrasse, Kabeljau-Beignets. Gault & Millau.<br><strong>Mi – So.</strong> Reservierung empfohlen.",
+      "13 quai Georges Clémenceau · Saint-Martin-de-Ré<br>Am Hafen, produktorientierte Küche im Rhythmus der Gezeiten. Ehemaliger Michelin Bib Gourmand.<br><strong>Di – So · 12–14:30 & 19:30–21:30 Uhr.</strong>"
+    ],
+    nl: [
+      "16 rue de l'Olivette · La Couarde-sur-Mer<br>Seizoensgebonden keuken op Japanse barbecue, dagmenu. Intieme sfeer.<br><strong>Gesloten di & wo.</strong>",
+      "2 bis avenue de Nouralène · La Couarde-sur-Mer<br>Bistro aan zee, schaduwrijk terras, kabeljauwbeignets. Gault & Millau.<br><strong>Wo – Zo.</strong> Reserveren aanbevolen.",
+      "13 quai Georges Clémenceau · Saint-Martin-de-Ré<br>Aan de haven, keuken op basis van verse producten, in het ritme van de getijden. Voormalig Michelin Bib Gourmand.<br><strong>Di – Zo · 12–14u30 & 19u30–21u30.</strong>"
+    ],
+    es: [
+      "16 rue de l'Olivette · La Couarde-sur-Mer<br>Cocina de temporada a la barbacoa japonesa, carta de pizarra. Ambiente íntimo.<br><strong>Cerrado mar. y mié.</strong>",
+      "2 bis avenue de Nouralène · La Couarde-sur-Mer<br>Bistró junto al mar, terraza con sombra, buñuelos de bacalao. Gault & Millau.<br><strong>Mié – Dom.</strong> Se recomienda reservar.",
+      "13 quai Georges Clémenceau · Saint-Martin-de-Ré<br>En el puerto, cocina de producto al ritmo de las mareas. Antiguo Bib Gourmand Michelin.<br><strong>Mar – Dom · 12:00–14:30 y 19:30–21:30.</strong>"
+    ],
+    it: [
+      "16 rue de l'Olivette · La Couarde-sur-Mer<br>Cucina di stagione alla griglia giapponese, menu su lavagna. Atmosfera intima.<br><strong>Chiuso mar. e mer.</strong>",
+      "2 bis avenue de Nouralène · La Couarde-sur-Mer<br>Bistrot sul mare, terrazza ombreggiata, frittelle di baccalà. Gault & Millau.<br><strong>Mer – Dom.</strong> Prenotazione consigliata.",
+      "13 quai Georges Clémenceau · Saint-Martin-de-Ré<br>Sul porto, cucina di prodotto scandita dalle maree. Ex Bib Gourmand Michelin.<br><strong>Mar – Dom · 12:00–14:30 e 19:30–21:30.</strong>"
+    ],
+    pl: [
+      "16 rue de l'Olivette · La Couarde-sur-Mer<br>Sezonowa kuchnia z japońskiego grilla, menu na tablicy. Kameralna atmosfera.<br><strong>Zamknięte we wt. i śr.</strong>",
+      "2 bis avenue de Nouralène · La Couarde-sur-Mer<br>Bistro nad morzem, zacieniony taras, racuchy z dorsza. Gault & Millau.<br><strong>Śr – Nd.</strong> Zalecana rezerwacja.",
+      "13 quai Georges Clémenceau · Saint-Martin-de-Ré<br>Nad portem, kuchnia produktowa w rytmie pływów. Była Bib Gourmand Michelin.<br><strong>Wt – Nd · 12:00–14:30 i 19:30–21:30.</strong>"
+    ]
+  }[lang]);
+
+  // ================= ACTIVITÉS =================
+  var actFaq = document.querySelectorAll('#activites .faq-item');
+  applyHTML(Array.prototype.map.call(actFaq, function(el){ return el.querySelector('.faq-a'); }), {
+    en: [
+      "The westernmost point of the island. 257 steps, 360° panorama over the Atlantic. <strong>16 km by bike</strong> from the hotel. Open 10am–7pm. <strong>€4/adult.</strong>",
+      "In Les Portes-en-Ré, <strong>18 km by bike</strong> — the furthest but worth the detour. A sandbank in the middle of the ocean, accessible at low tide. Turquoise waters, lunar landscape. Arrive 2h before low tide. Mind the currents, stay cautious.",
+      "<strong>7 km by bike</strong>. UNESCO-listed Vauban citadel, 17th-century ramparts, flower-lined streets, marina.",
+      "<strong>11.5 km by bike</strong>. Authentic fishing harbour, oyster tasting at the oyster farms.",
+      "Guided tour with a salt harvester, fleur de sel tasting. By reservation. <strong>€8/person.</strong>",
+      "Village listed as one of the \"Most Beautiful Villages of France\". Iconic black-and-white church tower, hollyhocks.",
+      "<strong>La Couarde-sur-Mer</strong> — every day, 8:00am–1:30pm<br><strong>Saint-Martin-de-Ré</strong> — every day<br><strong>La Flotte</strong> — every day<br><strong>Ars-en-Ré</strong> — every day",
+      "Concerts, night markets, local festivals, exhibitions — find everything happening on the island during your stay."
+    ],
+    de: [
+      "Der westlichste Punkt der Insel. 257 Stufen, 360°-Panorama auf den Atlantik. <strong>16 km mit dem Rad</strong> vom Hotel. Geöffnet 10–19 Uhr. <strong>4€/Erwachsener.</strong>",
+      "In Les Portes-en-Ré, <strong>18 km mit dem Rad</strong> — am weitesten entfernt, aber den Umweg wert. Sandbank mitten im Ozean, bei Ebbe erreichbar. Türkisfarbenes Wasser, mondähnliche Landschaft. 2 Std. vor der Ebbe ankommen. Vorsicht vor Strömungen.",
+      "<strong>7 km mit dem Rad</strong>. UNESCO-Zitadelle von Vauban, Stadtmauern aus dem 17. Jh., blumengeschmückte Gassen, Yachthafen.",
+      "<strong>11,5 km mit dem Rad</strong>. Authentischer Fischereihafen, Austernverkostung bei den Austernzüchtern.",
+      "Geführte Tour mit einem Salzbauern, Fleur-de-Sel-Verkostung. Auf Reservierung. <strong>8€/Person.</strong>",
+      "Dorf, ausgezeichnet als eines der „Schönsten Dörfer Frankreichs“. Markanter schwarz-weißer Kirchturm, Stockrosen.",
+      "<strong>La Couarde-sur-Mer</strong> — täglich, 8:00–13:30 Uhr<br><strong>Saint-Martin-de-Ré</strong> — täglich<br><strong>La Flotte</strong> — täglich<br><strong>Ars-en-Ré</strong> — täglich",
+      "Konzerte, Nachtmärkte, lokale Feste, Ausstellungen — hier finden Sie alles, was während Ihres Aufenthalts auf der Insel stattfindet."
+    ],
+    nl: [
+      "Het meest westelijke punt van het eiland. 257 treden, 360°-panorama op de Atlantische Oceaan. <strong>16 km fietsen</strong> vanaf het hotel. Open 10u–19u. <strong>€4/volwassene.</strong>",
+      "In Les Portes-en-Ré, <strong>18 km fietsen</strong> — het verste, maar de moeite waard. Zandbank midden in de oceaan, bereikbaar bij eb. Turkoois water, maanlandschap. Kom 2u vóór laagtij aan. Let op de stroming.",
+      "<strong>7 km fietsen</strong>. UNESCO-citadel van Vauban, 17e-eeuwse vestingmuren, met bloemen omzoomde straatjes, jachthaven.",
+      "<strong>11,5 km fietsen</strong>. Authentieke vissershaven, oesters proeven bij de oesterkwekers.",
+      "Rondleiding met een zoutwinner, fleur de sel proeven. Op reservering. <strong>€8/persoon.</strong>",
+      "Dorp bekroond als een van de \"Mooiste Dorpen van Frankrijk\". Kenmerkende zwart-witte kerktoren, stokrozen.",
+      "<strong>La Couarde-sur-Mer</strong> — elke dag, 8u00–13u30<br><strong>Saint-Martin-de-Ré</strong> — elke dag<br><strong>La Flotte</strong> — elke dag<br><strong>Ars-en-Ré</strong> — elke dag",
+      "Concerten, avondmarkten, lokale feesten, tentoonstellingen — vind alles wat er tijdens uw verblijf op het eiland te doen is."
+    ],
+    es: [
+      "El punto más occidental de la isla. 257 escalones, panorámica de 360° sobre el Atlántico. <strong>16 km en bici</strong> desde el hotel. Abierto de 10h a 19h. <strong>4€/adulto.</strong>",
+      "En Les Portes-en-Ré, a <strong>18 km en bici</strong> — lo más lejos pero merece el desvío. Banco de arena en medio del océano, accesible con marea baja. Aguas turquesas, paisaje lunar. Llega 2h antes de la bajamar. Cuidado con las corrientes.",
+      "<strong>7 km en bici</strong>. Ciudadela Vauban declarada Patrimonio UNESCO, murallas del s. XVII, calles floridas, puerto deportivo.",
+      "<strong>11,5 km en bici</strong>. Puerto pesquero auténtico, degustación de ostras en las ostrerías.",
+      "Visita guiada con un salinero, degustación de flor de sal. Con reserva. <strong>8€/persona.</strong>",
+      "Pueblo declarado uno de los \"Pueblos más bonitos de Francia\". Icónico campanario blanco y negro, malvarrosas.",
+      "<strong>La Couarde-sur-Mer</strong> — todos los días, 8:00–13:30h<br><strong>Saint-Martin-de-Ré</strong> — todos los días<br><strong>La Flotte</strong> — todos los días<br><strong>Ars-en-Ré</strong> — todos los días",
+      "Conciertos, mercados nocturnos, fiestas locales, exposiciones — descubre todo lo que ocurre en la isla durante tu estancia."
+    ],
+    it: [
+      "Il punto più occidentale dell'isola. 257 gradini, panorama a 360° sull'Atlantico. <strong>16 km in bici</strong> dall'hotel. Aperto dalle 10 alle 19. <strong>4€/adulto.</strong>",
+      "A Les Portes-en-Ré, a <strong>18 km in bici</strong> — il più lontano ma vale la deviazione. Banco di sabbia in mezzo all'oceano, accessibile a bassa marea. Acque turchesi, paesaggio lunare. Arriva 2h prima della bassa marea. Attenzione alle correnti.",
+      "<strong>7 km in bici</strong>. Cittadella Vauban patrimonio UNESCO, mura del XVII secolo, viuzze fiorite, porto turistico.",
+      "<strong>11,5 km in bici</strong>. Autentico porto peschereccio, degustazione di ostriche presso gli ostricoltori.",
+      "Visita guidata con un salinaro, degustazione di fior di sale. Su prenotazione. <strong>8€/persona.</strong>",
+      "Villaggio inserito tra i \"Borghi più belli di Francia\". Iconico campanile bianco e nero, malvoni.",
+      "<strong>La Couarde-sur-Mer</strong> — tutti i giorni, 8:00–13:30<br><strong>Saint-Martin-de-Ré</strong> — tutti i giorni<br><strong>La Flotte</strong> — tutti i giorni<br><strong>Ars-en-Ré</strong> — tutti i giorni",
+      "Concerti, mercatini serali, feste locali, mostre — scopri tutto ciò che succede sull'isola durante il tuo soggiorno."
+    ],
+    pl: [
+      "Najbardziej wysunięty na zachód punkt wyspy. 257 stopni, panorama 360° na Atlantyk. <strong>16 km rowerem</strong> od hotelu. Otwarte 10–19. <strong>4€/dorosły.</strong>",
+      "W Les Portes-en-Ré, <strong>18 km rowerem</strong> — najdalej, ale warto. Ławica piasku na środku oceanu, dostępna przy odpływie. Turkusowa woda, księżycowy krajobraz. Przyjedź 2h przed odpływem. Uważaj na prądy.",
+      "<strong>7 km rowerem</strong>. Cytadela Vaubana wpisana na listę UNESCO, mury z XVII w., kwieciste uliczki, przystań.",
+      "<strong>11,5 km rowerem</strong>. Autentyczny port rybacki, degustacja ostryg u hodowców.",
+      "Zwiedzanie z przewodnikiem — solnikiem, degustacja soli fleur de sel. Na rezerwację. <strong>8€/os.</strong>",
+      "Wioska uznana za jedną z \"Najpiękniejszych wiosek Francji\". Charakterystyczna czarno-biała wieża kościelna, malwy.",
+      "<strong>La Couarde-sur-Mer</strong> — codziennie, 8:00–13:30<br><strong>Saint-Martin-de-Ré</strong> — codziennie<br><strong>La Flotte</strong> — codziennie<br><strong>Ars-en-Ré</strong> — codziennie",
+      "Koncerty, nocne targi, lokalne święta, wystawy — znajdź wszystko, co dzieje się na wyspie podczas Twojego pobytu."
+    ]
+  }[lang]);
+  applyHTML(Array.prototype.map.call(actFaq, function(el){ return el.querySelector('.faq-q'); }), (function(){
+    var base = Array.prototype.map.call(actFaq, function(el){ return el.querySelector('.faq-q').innerHTML; });
+    var lastIdx = base.length - 1;
+    var t = {
+      en:'Island events calendar', de:'Veranstaltungskalender der Insel', nl:'Evenementenkalender van het eiland',
+      es:'Calendario de eventos de la isla', it:'Calendario eventi dell\'isola', pl:'Kalendarz wydarzeń na wyspie'
+    }[lang];
+    base[lastIdx] = t;
+    return base;
+  })());
+  var agendaBtn = document.querySelector('#activites a[href*="iledere.com"]');
+  setHTML(agendaBtn, {
+    en:'📅 See the calendar', de:'📅 Kalender ansehen', nl:'📅 Bekijk de agenda',
+    es:'📅 Ver el calendario', it:'📅 Vedi il calendario', pl:'📅 Zobacz kalendarz'
+  }[lang]);
+
+  // ================= MARÉES =================
+  var mareeFaqQ = document.querySelector('#marees .faq-q');
+  var mareeFaqA = document.querySelector('#marees .faq-a');
+  setText(mareeFaqQ, {
+    en:'Why tides matter here', de:'Warum die Gezeiten hier wichtig sind', nl:'Waarom getijden hier belangrijk zijn',
+    es:'Por qué las mareas importan aquí', it:'Perché le maree contano qui', pl:'Dlaczego pływy są tu ważne'
+  }[lang]);
+  setHTML(mareeFaqA, {
+    en:'The tidal range reaches <strong>5 metres</strong> at spring tides. Best swimming 2h before and 2h after high tide. Banc du Bûcheron is only accessible at low tide.',
+    de:'Der Tidenhub erreicht bei Springtide <strong>5 Meter</strong>. Optimales Baden 2 Std. vor und 2 Std. nach der Flut. Der Banc du Bûcheron ist nur bei Ebbe zugänglich.',
+    nl:'Het getijverschil bereikt <strong>5 meter</strong> bij springtij. Optimaal zwemmen 2u vóór en 2u na hoogtij. De Banc du Bûcheron is alleen bij laagtij bereikbaar.',
+    es:'El rango de marea alcanza <strong>5 metros</strong> en mareas vivas. El mejor baño es 2h antes y 2h después de la pleamar. El Banc du Bûcheron solo es accesible con marea baja.',
+    it:'L\'escursione di marea raggiunge i <strong>5 metri</strong> nelle maree sizigiali. Momento ideale per il bagno: 2h prima e 2h dopo l\'alta marea. Il Banc du Bûcheron è accessibile solo a bassa marea.',
+    pl:'Zasięg pływów sięga <strong>5 metrów</strong> podczas syzygii. Najlepszy czas na kąpiel to 2h przed i 2h po przypływie. Banc du Bûcheron jest dostępny tylko przy odpływie.'
+  }[lang]);
+  applyHTML(document.querySelectorAll('.maree-btn-full'), {
+    en:['🌊'+NBSP+'Tides & upcoming weather'], de:['🌊'+NBSP+'Gezeiten & Wetter'], nl:['🌊'+NBSP+'Getijden & weer'],
+    es:['🌊'+NBSP+'Mareas y previsión'], it:['🌊'+NBSP+'Maree e meteo'], pl:['🌊'+NBSP+'Pływy i pogoda']
+  }[lang]);
+
+  // ================= PRATIQUE =================
+  var pratFaq = document.querySelectorAll('#pratique .faq-item');
+  applyHTML(Array.prototype.map.call(pratFaq, function(el){ return el.querySelector('.faq-q'); }), {
+    en: ['Supermarket','Pharmacy','Emergencies','Cash machines','Souvenirs to bring home'],
+    de: ['Supermarkt','Apotheke','Notfälle','Geldautomaten','Mitbringsel für zuhause'],
+    nl: ['Supermarkt','Apotheek','Noodgevallen','Geldautomaten','Souvenirs om mee te nemen'],
+    es: ['Supermercado','Farmacia','Emergencias','Cajeros automáticos','Recuerdos para llevar'],
+    it: ['Supermercato','Farmacia','Emergenze','Bancomat','Souvenir da portare a casa'],
+    pl: ['Supermarket','Apteka','Nagłe wypadki','Bankomaty','Pamiątki do zabrania']
+  }[lang]);
+  var pratAnswers = Array.prototype.map.call(pratFaq, function(el){ return el.querySelector('.faq-a'); });
+  applyHTML([pratAnswers[0]], {
+    en:["<strong>Carrefour Contact</strong> — 27 avenue du Mail<br>Mon–Sat: 8:00am–8:00pm &nbsp;·&nbsp; Sun: 9:00am–1:00pm"],
+    de:["<strong>Carrefour Contact</strong> — 27 avenue du Mail<br>Mo–Sa: 8:00–20:00 Uhr &nbsp;·&nbsp; So: 9:00–13:00 Uhr"],
+    nl:["<strong>Carrefour Contact</strong> — 27 avenue du Mail<br>Ma–Za: 8u00–20u00 &nbsp;·&nbsp; Zo: 9u00–13u00"],
+    es:["<strong>Carrefour Contact</strong> — 27 avenue du Mail<br>Lun–Sáb: 8:00–20:00 &nbsp;·&nbsp; Dom: 9:00–13:00"],
+    it:["<strong>Carrefour Contact</strong> — 27 avenue du Mail<br>Lun–Sab: 8:00–20:00 &nbsp;·&nbsp; Dom: 9:00–13:00"],
+    pl:["<strong>Carrefour Contact</strong> — 27 avenue du Mail<br>Pon–Sob: 8:00–20:00 &nbsp;·&nbsp; Niedz: 9:00–13:00"]
+  }[lang]);
+  applyHTML([pratAnswers[1]], {
+    en:["<strong>Pharmacie d'Antioche</strong> — 1 avenue d'Antioche<br>Mon–Fri: 8:30am–8:00pm &nbsp;·&nbsp; Sat: 9:00am–4:30pm"],
+    de:["<strong>Pharmacie d'Antioche</strong> — 1 avenue d'Antioche<br>Mo–Fr: 8:30–20:00 Uhr &nbsp;·&nbsp; Sa: 9:00–16:30 Uhr"],
+    nl:["<strong>Pharmacie d'Antioche</strong> — 1 avenue d'Antioche<br>Ma–Vr: 8u30–20u00 &nbsp;·&nbsp; Za: 9u00–16u30"],
+    es:["<strong>Pharmacie d'Antioche</strong> — 1 avenue d'Antioche<br>Lun–Vie: 8:30–20:00 &nbsp;·&nbsp; Sáb: 9:00–16:30"],
+    it:["<strong>Pharmacie d'Antioche</strong> — 1 avenue d'Antioche<br>Lun–Ven: 8:30–20:00 &nbsp;·&nbsp; Sab: 9:00–16:30"],
+    pl:["<strong>Pharmacie d'Antioche</strong> — 1 avenue d'Antioche<br>Pon–Pt: 8:30–20:00 &nbsp;·&nbsp; Sob: 9:00–16:30"]
+  }[lang]);
+  applyHTML([pratAnswers[4]], {
+    en: ["<strong>Fleur de sel</strong> — salt harvesters in Loix<br><strong>Pineau des Charentes</strong> — Vignerons cellar in Le Bois-Plage<br><strong>Oysters in a cooler</strong> — oyster farmers in La Flotte"],
+    de: ["<strong>Fleur de sel</strong> — Salzbauern in Loix<br><strong>Pineau des Charentes</strong> — Winzerkeller in Le Bois-Plage<br><strong>Austern in der Kühlbox</strong> — Austernzüchter in La Flotte"],
+    nl: ["<strong>Fleur de sel</strong> — zoutwinners in Loix<br><strong>Pineau des Charentes</strong> — wijnkelder in Le Bois-Plage<br><strong>Oesters in een koelbox</strong> — oesterkwekers in La Flotte"],
+    es: ["<strong>Fleur de sel</strong> — saliñeros en Loix<br><strong>Pineau des Charentes</strong> — bodega de viticultores en Le Bois-Plage<br><strong>Ostras en nevera portátil</strong> — ostricultores en La Flotte"],
+    it: ["<strong>Fleur de sel</strong> — salinari a Loix<br><strong>Pineau des Charentes</strong> — cantina dei vignaioli a Le Bois-Plage<br><strong>Ostriche in borsa frigo</strong> — ostricoltori a La Flotte"],
+    pl: ["<strong>Fleur de sel</strong> — solnicy w Loix<br><strong>Pineau des Charentes</strong> — winnica w Le Bois-Plage<br><strong>Ostrygi w lodówce turystycznej</strong> — hodowcy ostryg w La Flotte"]
+  }[lang]);
+  var urgenceBtns = document.querySelectorAll('#pratique .btn-rouge');
+  applyHTML(urgenceBtns, {
+    en: ['🚑 Ambulance (SAMU) — 15','🚒 Fire brigade — 18','🆘 Europe — 112'],
+    de: ['🚑 Rettungsdienst (SAMU) — 15','🚒 Feuerwehr — 18','🆘 Europa — 112'],
+    nl: ['🚑 Ambulance (SAMU) — 15','🚒 Brandweer — 18','🆘 Europa — 112'],
+    es: ['🚑 Ambulancia (SAMU) — 15','🚒 Bomberos — 18','🆘 Europa — 112'],
+    it: ['🚑 Ambulanza (SAMU) — 15','🚒 Vigili del fuoco — 18','🆘 Europa — 112'],
+    pl: ['🚑 Pogotowie (SAMU) — 15','🚒 Straż pożarna — 18','🆘 Europa — 112']
+  }[lang]);
+
+  // ================= DÉPART =================
+  var depFaq = document.querySelectorAll('#depart .faq-item');
+  applyHTML(Array.prototype.map.call(depFaq, function(el){ return el.querySelector('.faq-q'); }), {
+    en: ['Check-out','Avoiding traffic',"Île de Ré bridge toll",'Petrol station before the bridge'],
+    de: ['Check-out','Stau vermeiden','Brückenmaut Île de Ré','Tankstelle vor der Brücke'],
+    nl: ['Check-out','Files vermijden','Tolweg brug Île de Ré','Tankstation vóór de brug'],
+    es: ['Check-out','Evitar atascos','Peaje del puente de la Île de Ré','Gasolinera antes del puente'],
+    it: ['Check-out','Evitare il traffico','Pedaggio ponte Île de Ré','Distributore prima del ponte'],
+    pl: ['Wymeldowanie','Unikanie korków','Opłata za most Île de Ré','Stacja benzynowa przed mostem']
+  }[lang]);
+  applyHTML(Array.prototype.map.call(depFaq, function(el){ return el.querySelector('.faq-a'); }), {
+    en: [
+      'Return your key to reception before <strong>11:00 AM</strong>. Luggage storage available until you leave.',
+      '<strong>Sunday evening — avoid 5–9pm.</strong><br>Leave before 3:30pm or after 9pm. Saturday: avoid 10am–1pm heading out and 4–8pm heading back.',
+      'Return trip included, nothing to pay on the way back:<br><strong>€4</strong> — Low season (Nov 15 → Mar 1)<br><strong>€8</strong> — Mid season (Mar 2 → Jun 14 / Sep 16 → Nov 14)<br><strong>€16</strong> — High season (Jun 15 → Sep 15 + May bank holidays)<br>Bikes & pedestrians: <strong>free</strong>',
+      'Total station — Sainte-Marie-de-Ré, just before the bridge.'
+    ],
+    de: [
+      'Schlüssel bis <strong>11:00 Uhr</strong> an der Rezeption abgeben. Gepäckaufbewahrung bis zur Abreise möglich.',
+      '<strong>Sonntagabend — 17–21 Uhr meiden.</strong><br>Vor 15:30 Uhr oder nach 21 Uhr abreisen. Samstag: 10–13 Uhr bei der Hinfahrt und 16–20 Uhr bei der Rückfahrt meiden.',
+      'Hin- und Rückfahrt inbegriffen, bei der Rückfahrt nichts zu zahlen:<br><strong>4€</strong> — Nebensaison (15. Nov → 1. März)<br><strong>8€</strong> — Zwischensaison (2. März → 14. Juni / 16. Sept → 14. Nov)<br><strong>16€</strong> — Hauptsaison (15. Juni → 15. Sept + Feiertage im Mai)<br>Fahrräder & Fußgänger: <strong>kostenlos</strong>',
+      'Total-Tankstelle — Sainte-Marie-de-Ré, kurz vor der Brücke.'
+    ],
+    nl: [
+      'Sleutel vóór <strong>11u00</strong> inleveren bij de receptie. Bagage-opslag mogelijk tot uw vertrek.',
+      '<strong>Zondagavond — vermijd 17u–21u.</strong><br>Vertrek vóór 15u30 of na 21u. Zaterdag: vermijd 10u–13u bij vertrek en 16u–20u bij terugkeer.',
+      'Retour inbegrepen, bij terugkeer niets te betalen:<br><strong>€4</strong> — Laagseizoen (15 nov → 1 maart)<br><strong>€8</strong> — Middenseizoen (2 maart → 14 juni / 16 sept → 14 nov)<br><strong>€16</strong> — Hoogseizoen (15 juni → 15 sept + meivakantie)<br>Fietsen & voetgangers: <strong>gratis</strong>',
+      'Total-tankstation — Sainte-Marie-de-Ré, net vóór de brug.'
+    ],
+    es: [
+      'Deja la llave en recepción antes de las <strong>11:00</strong>. Depósito de equipaje posible hasta tu salida.',
+      '<strong>Domingo por la tarde — evita de 17:00 a 21:00.</strong><br>Sal antes de las 15:30 o después de las 21:00. Sábado: evita de 10:00 a 13:00 a la ida y de 16:00 a 20:00 a la vuelta.',
+      'Ida y vuelta incluidas, nada que pagar a la vuelta:<br><strong>4€</strong> — Temporada baja (15 nov → 1 mar)<br><strong>8€</strong> — Temporada media (2 mar → 14 jun / 16 sep → 14 nov)<br><strong>16€</strong> — Temporada alta (15 jun → 15 sep + puentes de mayo)<br>Bicicletas y peatones: <strong>gratis</strong>',
+      'Gasolinera Total — Sainte-Marie-de-Ré, justo antes del puente.'
+    ],
+    it: [
+      'Consegna la chiave in reception entro le <strong>11:00</strong>. Deposito bagagli disponibile fino alla partenza.',
+      '<strong>Domenica sera — evita dalle 17 alle 21.</strong><br>Parti prima delle 15:30 o dopo le 21. Sabato: evita dalle 10 alle 13 all\'andata e dalle 16 alle 20 al ritorno.',
+      'Andata e ritorno incluso, nulla da pagare al ritorno:<br><strong>4€</strong> — Bassa stagione (15 nov → 1 mar)<br><strong>8€</strong> — Media stagione (2 mar → 14 giu / 16 set → 14 nov)<br><strong>16€</strong> — Alta stagione (15 giu → 15 set + ponti di maggio)<br>Bici e pedoni: <strong>gratuito</strong>',
+      'Distributore Total — Sainte-Marie-de-Ré, appena prima del ponte.'
+    ],
+    pl: [
+      'Zwróć klucz w recepcji przed <strong>11:00</strong>. Przechowanie bagażu możliwe do wyjazdu.',
+      '<strong>Niedzielny wieczór — unikaj 17–21.</strong><br>Wyjedź przed 15:30 lub po 21:00. Sobota: unikaj 10–13 w drodze tam i 16–20 w drodze powrotnej.',
+      'Podróż powrotna wliczona, nic do zapłaty w drodze powrotnej:<br><strong>4€</strong> — Sezon niski (15 lis → 1 mar)<br><strong>8€</strong> — Sezon średni (2 mar → 14 cze / 16 wrz → 14 lis)<br><strong>16€</strong> — Sezon wysoki (15 cze → 15 wrz + majowe święta)<br>Rowery i piesi: <strong>bezpłatnie</strong>',
+      'Stacja Total — Sainte-Marie-de-Ré, tuż przed mostem.'
+    ]
+  }[lang]);
+
+  // ================= FOOTER =================
+  setText(document.querySelector('.footer-guestify-tagline'), {
+    en:'I For You — Your digital stay guide', de:'I For You — Ihr digitaler Aufenthaltsführer', nl:'I For You — Uw digitale verblijfsgids',
+    es:'I For You — Tu guía de estancia digital', it:'I For You — La tua guida al soggiorno digitale', pl:'I For You — Twój cyfrowy przewodnik pobytu'
+  }[lang]);
+  setText(document.querySelector('.footer-copy'), {
+    en:'© 2026 Guestify — All rights reserved', de:'© 2026 Guestify — Alle Rechte vorbehalten', nl:'© 2026 Guestify — Alle rechten voorbehouden',
+    es:'© 2026 Guestify — Todos los derechos reservados', it:'© 2026 Guestify — Tutti i diritti riservati', pl:'© 2026 Guestify — Wszelkie prawa zastrzeżone'
+  }[lang]);
+
+  // ================= MÉTÉO (widget dynamique) =================
+  var meteoLabels = {
+    en: { 'Ensoleillé':'Sunny','Peu nuageux':'Partly cloudy','Nuageux':'Cloudy','Brumeux':'Foggy','Pluie':'Rain','Averses':'Showers','Orage':'Storm' },
+    de: { 'Ensoleillé':'Sonnig','Peu nuageux':'Leicht bewölkt','Nuageux':'Bewölkt','Brumeux':'Neblig','Pluie':'Regen','Averses':'Schauer','Orage':'Gewitter' },
+    nl: { 'Ensoleillé':'Zonnig','Peu nuageux':'Licht bewolkt','Nuageux':'Bewolkt','Brumeux':'Mistig','Pluie':'Regen','Averses':'Buien','Orage':'Onweer' },
+    es: { 'Ensoleillé':'Soleado','Peu nuageux':'Poco nuboso','Nuageux':'Nublado','Brumeux':'Neblina','Pluie':'Lluvia','Averses':'Chubascos','Orage':'Tormenta' },
+    it: { 'Ensoleillé':'Soleggiato','Peu nuageux':'Poco nuvoloso','Nuageux':'Nuvoloso','Brumeux':'Nebbia','Pluie':'Pioggia','Averses':'Rovesci','Orage':'Temporale' },
+    pl: { 'Ensoleillé':'Słonecznie','Peu nuageux':'Lekkie zachmurzenie','Nuageux':'Pochmurno','Brumeux':'Mgliście','Pluie':'Deszcz','Averses':'Przelotne opady','Orage':'Burza' }
+  };
+  var meteoEl = document.getElementById('meteo-label');
+  if (meteoEl) {
+    var obs = new MutationObserver(function(){
+      var txt = meteoEl.textContent.trim();
+      if (meteoLabels[lang] && meteoLabels[lang][txt]) meteoEl.textContent = meteoLabels[lang][txt];
+    });
+    obs.observe(meteoEl, { childList: true });
+  }
+
+})();
 </script>
+
 </body>
 </html>
